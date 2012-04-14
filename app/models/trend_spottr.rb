@@ -7,21 +7,27 @@ class TrendSpottr < ActiveRecord::Base
   
   def self.query( q )
     trendspottr_uri = URI(@@URL)
-    params = { :q => q}
+    params = { :q => q, :expand=> false}
     trendspottr_uri.query = URI.encode_www_form(params)
     
-    request = Net::HTTP::Get.new(trendspottt_uri.request_uri)
+    request = Net::HTTP::Get.new(trendspottr_uri.request_uri)
     request.basic_auth @@USERNAME, @@PASSWORD
     
-    response = Net::HTTP.start(trendspottr_uri.hostname, trendspottr_uri.port) {|http|
+    response = Net::HTTP.start(trendspottr_uri.host, trendspottr_uri.port) {|http|
       http.request(request)
     }
     
-    puts response.body
-    #response_data = Net::HTTP.get_response(trendspottr_uri)
-    #json_data = JSON.parse(response_data.body) if response_data.is_a?(Net::HTTPSuccess)
+    data = JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
+    data
   end
   
-  
+  def self.weight( q )
+    response = query( q )
+    weight = 0.0 
+    response["results"]["links"].each do |link|
+      weight = weight + link["weight"].to_f
+    end
+    weight
+  end
   
 end

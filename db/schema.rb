@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120414143658) do
+ActiveRecord::Schema.define(:version => 20120414173948) do
 
   create_table "quotes", :force => true do |t|
     t.date     "date"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20120414143658) do
     t.float    "adjusted_close"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.integer  "stock_id"
   end
 
   create_table "stocks", :force => true do |t|
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20120414143658) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.float    "score"
   end
 
   create_table "trend_spottrs", :force => true do |t|
